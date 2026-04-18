@@ -4,8 +4,8 @@ export type Lead = {
   email: string
   phone?: string
   source: "instagram" | "facebook" | "landing_page" | "referred" | "other"
-  interest_product: string
-  budget: number
+  interest_product?: string
+  budget?: number
   created_at: Date | string
 }
 

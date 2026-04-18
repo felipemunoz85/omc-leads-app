@@ -9,9 +9,10 @@ import { Table, TableBody, TableCaption } from "@/components/ui/table";
 type Props = {
   leads: Lead[];
   onLeadEdit: (lead: Lead) => void
+  onDelete: (lead: Lead) => void
 };
 
-export default function LeadsTable({ leads, onLeadEdit }: Props): JSX.Element {
+export default function LeadsTable({ leads, onLeadEdit, onDelete }: Props): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
     const onOpenModal = (lead: Lead) => {
@@ -29,7 +30,12 @@ export default function LeadsTable({ leads, onLeadEdit }: Props): JSX.Element {
         <LeadsTableHeader />
         <TableBody>
           {leads.map((lead: Lead) => (
-            <LeadRow key={lead.id} lead={lead} onShowLead={(lead) => onOpenModal(lead)} onEdit={(lead) => onLeadEdit(lead)} />
+            <LeadRow
+              key={lead.id}
+              lead={lead}
+              onShowLead={(lead) => onOpenModal(lead)}
+              onEdit={(lead) => onLeadEdit(lead)}
+              onDelete={(lead) => onDelete(lead)}/>
           ))}
         </TableBody>
       </Table>

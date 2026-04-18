@@ -14,33 +14,14 @@ import {
 } from "@/components/ui/select";
 import { Lead } from "@/types/leads";
 
-const leadSchema = z.object({
-  name: z
-    .string()
-    .min(1, 'El nombre es obligatorio')
-    .min(2, 'Mínimo 2 caracteres'),
-  email: z
-    .email('Email inválido')
-    .min(1, 'El email es obligatorio'),
-  phone: z.string().optional(),
-  source: z
-    .string()
-    .min(1, 'La fuente es obligatoria'),
-  interest_product: z.string().optional(),
-  budget: z
-    .number({ error: 'Debe ser un número' })
-    .min(0, 'Debe ser mayor o igual a 0')
-    .optional()
-    .or(z.nan().transform(() => undefined)),
-})
+import { leadSchema, LeadFormData } from "@/lib/validations";
+
 
 type LeadFormProps = {
   lead: Lead | null;
   onClose: () => void;
   onSubmit: (data: LeadFormData) => void
 };
-
-type LeadFormData = z.infer<typeof leadSchema>
 
 export default function LeadForm({ onClose, lead, onSubmit }: LeadFormProps) {
   const isEditing = !!lead;
@@ -55,8 +36,8 @@ export default function LeadForm({ onClose, lead, onSubmit }: LeadFormProps) {
     defaultValues: {
       name: lead?.name ?? '',
       email: lead?.email ?? '',
-      phone: lead?.phone ?? '',
-      source: lead?.source ?? '',
+      phone: lead?.phone ?? undefined,
+      source: lead?.source ?? 'other',
       interest_product: lead?.interest_product ?? '',
       budget: lead?.budget ?? undefined,
     },

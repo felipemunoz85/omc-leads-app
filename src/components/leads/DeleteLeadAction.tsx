@@ -14,7 +14,10 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 
-export function DeleteLeadAction() {
+type Props = {
+  onDelete: () => void
+}
+export function DeleteLeadAction({onDelete}: Props) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -34,7 +37,7 @@ export function DeleteLeadAction() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel variant="outline">Cancelar</AlertDialogCancel>
-          <AlertDialogAction variant="destructive">Eliminar</AlertDialogAction>
+          <AlertDialogAction variant="destructive" onClick={onDelete}>Eliminar</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

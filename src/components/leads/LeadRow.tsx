@@ -15,10 +15,14 @@ type Props = {
   lead: Lead;
   onShowLead: (lead: Lead) => void;
   onEdit: (lead: Lead) => void
+  onDelete: (lead: Lead) => void
 };
 export default function LeadRow(props: Props): JSX.Element {
-  const { lead, onShowLead, onEdit } = props;
+  const { lead, onShowLead, onEdit, onDelete } = props;
 
+  const handleDeleteAction = () => {
+    onDelete(lead)
+  }
   return (
     <>
       <TableRow className="text-sm text-gray-500">
@@ -28,9 +32,9 @@ export default function LeadRow(props: Props): JSX.Element {
           </Button>
         </TableCell>
         <TableCell>{lead.email}</TableCell>
-        <TableCell>{lead.phone ?? "—"}</TableCell>
+        <TableCell>{lead.phone || "—"}</TableCell>
         <TableCell>{Sources[lead.source]}</TableCell>
-        <TableCell>{lead.interest_product ?? "—"}</TableCell>
+        <TableCell>{lead.interest_product || "—"}</TableCell>
         <TableCell>
           {lead.budget != null ? formatCurrency(lead.budget) : "—"}
         </TableCell>
@@ -55,7 +59,7 @@ export default function LeadRow(props: Props): JSX.Element {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <DeleteLeadAction />
+                <DeleteLeadAction onDelete={handleDeleteAction}/>
               </TooltipTrigger>
               <TooltipContent>
                 <p>Eliminar</p>
