@@ -12,13 +12,18 @@ import {
 
 type Props = {
   lead: Lead;
+  onNameClick?: () => void
 };
 export default function LeadRow(props: Props): JSX.Element {
-  const { lead } = props;
+  const { lead, onNameClick } = props;
   return (
     <>
       <TableRow className="text-sm text-gray-500">
-        <TableCell>{lead.name}</TableCell>
+        <TableCell>
+          <Button variant="link" onClick={onNameClick}>
+            {lead.name}
+          </Button>
+        </TableCell>
         <TableCell>{lead.email}</TableCell>
         <TableCell>{lead.phone ?? "—"}</TableCell>
         <TableCell>{Sources[lead.source]}</TableCell>

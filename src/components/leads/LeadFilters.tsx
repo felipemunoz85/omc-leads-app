@@ -2,6 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { SOURCES_FIELDS } from "@/lib/utils/constants";
 import {
   Select,
   SelectContent,
@@ -9,14 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-const SOURCES = [
-  { value: "instagram", label: "Instagram" },
-  { value: "facebook", label: "Facebook" },
-  { value: "landing_page", label: "Landing Page" },
-  { value: "referred", label: "Referido" },
-  { value: "other", label: "Otro" },
-];
 
 export default function LeadFilters() {
   return (
@@ -32,7 +25,7 @@ export default function LeadFilters() {
               <SelectValue placeholder="Todas las fuentes" />
             </SelectTrigger>
             <SelectContent>
-              {SOURCES.map(({ value, label }) => (
+              {SOURCES_FIELDS.map(({ value, label }) => (
                 <SelectItem key={value} value={value}>
                   {label}
                 </SelectItem>

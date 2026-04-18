@@ -32,7 +32,7 @@ export default function Modal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className={sizeStyles[size]}>
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+          <DialogTitle className='text-xl font-bold'>{title}</DialogTitle>
         </DialogHeader>
         {children}
       </DialogContent>
