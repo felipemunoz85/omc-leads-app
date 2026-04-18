@@ -2,11 +2,12 @@ import React from "react";
 import { Lead } from "@/types/leads";
 import { FIELDS_MAP } from "@/lib/utils/constants";
 type Props = {
-  lead: Lead
+  lead: Lead | null
 }
 
 const FIELD_NAMES = Object.keys(FIELDS_MAP)
 export default function LeadDetails({ lead }: Props) {
+  if (!lead) return null
   return (
     <div className="w-full">
       {FIELD_NAMES.map((field) => (

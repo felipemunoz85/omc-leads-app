@@ -9,16 +9,23 @@ import { Button } from "@/components/ui/button";
 import { initialLeads } from "@/lib/leadsData";
 
 import { UserRoundPlus } from "lucide-react";
+import { Lead } from "@/types/leads";
 
-<UserRoundPlus />
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [leadToEdit, setLeadToEdit] = useState<Lead | null>(null)
   const onOpenModal = () => {
     setIsModalOpen(true);
   };
 
+  const onEdit = (lead: Lead) => {
+    setLeadToEdit(lead)
+    setIsModalOpen(true)
+  }
+
   const onCloseModal = () => {
     setIsModalOpen(false);
+    setLeadToEdit(null)
   };
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -31,10 +38,10 @@ export default function Home() {
           <Button variant="outline" data-icon="inline-start" onClick={onOpenModal}>
             <UserRoundPlus />Nuevo Lead</Button>
         </div>
-        <LeadsTable leads={initialLeads} />
+        <LeadsTable leads={initialLeads} onLeadEdit={(value) => onEdit(value)} />
       </main>
       <Modal isOpen={isModalOpen} onClose={onCloseModal} title="Nuevo lead">
-        <LeadForm onClose={onCloseModal} />
+        <LeadForm onClose={onCloseModal} lead={leadToEdit} />
       </Modal>
     </div>
   );

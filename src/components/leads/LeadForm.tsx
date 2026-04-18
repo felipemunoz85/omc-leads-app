@@ -1,21 +1,25 @@
-'use client'
+"use client";
 
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { SOURCES_FIELDS } from '@/lib/utils/constants'
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { SOURCES_FIELDS } from "@/lib/utils/constants";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from "@/components/ui/select";
+import { Lead } from "@/types/leads";
 
 type LeadFormProps = {
-  onClose: () => void
-}
+  lead: Lead | null;
+  onClose: () => void;
+};
 
-export default function LeadForm({ onClose }: LeadFormProps) {
+export default function LeadForm({ onClose, lead }: LeadFormProps) {
+  const isEditing = !!lead;
+
   return (
     <form className="flex flex-col gap-5">
       <div className="flex flex-col gap-1.5">
@@ -25,6 +29,7 @@ export default function LeadForm({ onClose }: LeadFormProps) {
         <Input
           type="text"
           placeholder="Ej: Valentina Torres"
+          defaultValue={lead?.name}
         />
         <p className="text-xs text-red-500">El nombre es obligatorio</p>
       </div>
@@ -35,6 +40,7 @@ export default function LeadForm({ onClose }: LeadFormProps) {
         <Input
           type="email"
           placeholder="Ej: valentina@gmail.com"
+          defaultValue={lead?.email}
         />
         <p className="text-xs text-red-500">El email no es válido</p>
       </div>
@@ -46,13 +52,14 @@ export default function LeadForm({ onClose }: LeadFormProps) {
         <Input
           type="tel"
           placeholder="+57 311 234 5678"
+          defaultValue={lead?.phone}
         />
       </div>
       <div className="flex flex-col gap-1.5">
         <label className="text-sm font-medium text-gray-700">
           Fuente <span className="text-red-500">*</span>
         </label>
-        <Select>
+        <Select defaultValue={lead?.source}>
           <SelectTrigger>
             <SelectValue placeholder="Selecciona una fuente" />
           </SelectTrigger>
@@ -74,6 +81,7 @@ export default function LeadForm({ onClose }: LeadFormProps) {
         <Input
           type="text"
           placeholder="Ej: Curso de marketing digital"
+          defaultValue={lead?.interest_product}
         />
       </div>
       <div className="flex flex-col gap-1.5">
@@ -90,19 +98,21 @@ export default function LeadForm({ onClose }: LeadFormProps) {
             min={0}
             placeholder="0"
             className="pl-7"
+            defaultValue={lead?.budget}
           />
         </div>
-        <p className="text-xs text-red-500">El presupuesto debe ser mayor o igual a 0</p>
+        <p className="text-xs text-red-500">
+          El presupuesto debe ser mayor o igual a 0
+        </p>
       </div>
       <div className="flex items-center justify-end gap-3 pt-2 border-t border-gray-100">
         <Button variant="outline" type="button" onClick={onClose}>
           Cancelar
         </Button>
         <Button type="submit">
-          Guardar lead
+          {isEditing ? "Guardar cambios" : "Guardar lead"}
         </Button>
       </div>
-
     </form>
-  )
+  );
 }
