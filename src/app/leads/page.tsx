@@ -41,7 +41,7 @@ export default function Home() {
         <LeadsTable leads={initialLeads} onLeadEdit={(value) => onEdit(value)} />
       </main>
       <Modal isOpen={isModalOpen} onClose={onCloseModal} title="Nuevo lead">
-        <LeadForm onClose={onCloseModal} lead={leadToEdit} />
+        <LeadForm onClose={onCloseModal} lead={leadToEdit} onSubmit={(event) => console.log(event)} />
       </Modal>
     </div>
   );

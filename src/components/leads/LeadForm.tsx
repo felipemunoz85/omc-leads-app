@@ -1,5 +1,7 @@
 "use client";
-
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SOURCES_FIELDS } from "@/lib/utils/constants";
@@ -12,16 +14,56 @@ import {
 } from "@/components/ui/select";
 import { Lead } from "@/types/leads";
 
+const leadSchema = z.object({
+  name: z
+    .string()
+    .min(1, 'El nombre es obligatorio')
+    .min(2, 'Mínimo 2 caracteres'),
+  email: z
+    .email('Email inválido')
+    .min(1, 'El email es obligatorio'),
+  phone: z.string().optional(),
+  source: z
+    .string()
+    .min(1, 'La fuente es obligatoria'),
+  interest_product: z.string().optional(),
+  budget: z
+    .number({ error: 'Debe ser un número' })
+    .min(0, 'Debe ser mayor o igual a 0')
+    .optional()
+    .or(z.nan().transform(() => undefined)),
+})
+
 type LeadFormProps = {
   lead: Lead | null;
   onClose: () => void;
+  onSubmit: (data: LeadFormData) => void
 };
 
-export default function LeadForm({ onClose, lead }: LeadFormProps) {
+type LeadFormData = z.infer<typeof leadSchema>
+
+export default function LeadForm({ onClose, lead, onSubmit }: LeadFormProps) {
   const isEditing = !!lead;
 
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<LeadFormData>({
+    resolver: zodResolver(leadSchema),
+    defaultValues: {
+      name: lead?.name ?? '',
+      email: lead?.email ?? '',
+      phone: lead?.phone ?? '',
+      source: lead?.source ?? '',
+      interest_product: lead?.interest_product ?? '',
+      budget: lead?.budget ?? undefined,
+    },
+  });
+
   return (
-    <form className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
       <div className="flex flex-col gap-1.5">
         <label className="text-sm font-medium text-gray-700">
           Nombre <span className="text-red-500">*</span>
@@ -29,9 +71,11 @@ export default function LeadForm({ onClose, lead }: LeadFormProps) {
         <Input
           type="text"
           placeholder="Ej: Valentina Torres"
-          defaultValue={lead?.name}
+          {...register('name')}
         />
-        <p className="text-xs text-red-500">El nombre es obligatorio</p>
+        {errors.name && (
+          <p className="text-xs text-red-500">{errors.name.message}</p>
+        )}
       </div>
       <div className="flex flex-col gap-1.5">
         <label className="text-sm font-medium text-gray-700">
@@ -40,9 +84,11 @@ export default function LeadForm({ onClose, lead }: LeadFormProps) {
         <Input
           type="email"
           placeholder="Ej: valentina@gmail.com"
-          defaultValue={lead?.email}
+          {...register('email')}
         />
-        <p className="text-xs text-red-500">El email no es válido</p>
+        {errors.email && (
+          <p className="text-xs text-red-500">{errors.email.message}</p>
+        )}
       </div>
       <div className="flex flex-col gap-1.5">
         <label className="text-sm font-medium text-gray-700">
@@ -52,14 +98,14 @@ export default function LeadForm({ onClose, lead }: LeadFormProps) {
         <Input
           type="tel"
           placeholder="+57 311 234 5678"
-          defaultValue={lead?.phone}
+          {...register('phone')}
         />
       </div>
       <div className="flex flex-col gap-1.5">
         <label className="text-sm font-medium text-gray-700">
           Fuente <span className="text-red-500">*</span>
         </label>
-        <Select defaultValue={lead?.source}>
+        <Select defaultValue={lead?.source} onValueChange={(value) => setValue('source', value, { shouldValidate: true })}>
           <SelectTrigger>
             <SelectValue placeholder="Selecciona una fuente" />
           </SelectTrigger>
@@ -71,7 +117,9 @@ export default function LeadForm({ onClose, lead }: LeadFormProps) {
             ))}
           </SelectContent>
         </Select>
-        <p className="text-xs text-red-500">La fuente es obligatoria</p>
+        {errors.source && (
+          <p className="text-xs text-red-500">{errors.source.message}</p>
+        )}
       </div>
       <div className="flex flex-col gap-1.5">
         <label className="text-sm font-medium text-gray-700">
@@ -81,7 +129,7 @@ export default function LeadForm({ onClose, lead }: LeadFormProps) {
         <Input
           type="text"
           placeholder="Ej: Curso de marketing digital"
-          defaultValue={lead?.interest_product}
+          {...register('interest_product')}
         />
       </div>
       <div className="flex flex-col gap-1.5">
@@ -98,12 +146,12 @@ export default function LeadForm({ onClose, lead }: LeadFormProps) {
             min={0}
             placeholder="0"
             className="pl-7"
-            defaultValue={lead?.budget}
+            {...register('budget', { valueAsNumber: true })}
           />
         </div>
-        <p className="text-xs text-red-500">
-          El presupuesto debe ser mayor o igual a 0
-        </p>
+        {errors.budget && (
+          <p className="text-xs text-red-500">{errors.budget.message}</p>
+        )}
       </div>
       <div className="flex items-center justify-end gap-3 pt-2 border-t border-gray-100">
         <Button variant="outline" type="button" onClick={onClose}>
