@@ -4,6 +4,7 @@ import { formatDate, formatCurrency } from "@/lib/utils/format";
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { SquarePen, Trash2 } from "lucide-react";
+import { DeleteLeadAction } from "@/components/leads/DeleteLeadAction";
 import {
   Tooltip,
   TooltipContent,
@@ -47,9 +48,7 @@ export default function LeadRow(props: Props): JSX.Element {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="outline" size="icon" title="Eliminar">
-                  <Trash2 />
-                </Button>
+                <DeleteLeadAction />
               </TooltipTrigger>
               <TooltipContent>
                 <p>Eliminar</p>
