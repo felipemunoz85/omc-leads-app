@@ -23,7 +23,9 @@ function Field({ label, value }: FieldProps) {
   return (
     <tr>
       <td className="py-1.5 text-sm text-muted-foreground w-2/5">{label}</td>
-      <td className="py-1.5 text-sm font-medium text-foreground">{value || '—'}</td>
+      <td className="py-1.5 text-sm font-medium text-foreground">
+        {value || '—'}
+      </td>
     </tr>
   )
 }
@@ -36,7 +38,6 @@ export default function LeadDetails({ lead }: Props) {
 
   return (
     <div className="flex flex-col gap-4">
-
       <div className="flex items-center gap-2">
         <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center text-sm font-medium text-muted-foreground shrink-0">
           {initials}
@@ -68,13 +69,19 @@ export default function LeadDetails({ lead }: Props) {
             <Field label="Producto de interés" value={lead.interest_product} />
             <Field
               label="Presupuesto"
-              value={lead.budget != null ? `${formatCurrency(lead.budget)} USD` : null}
+              value={
+                lead.budget != null
+                  ? `${formatCurrency(lead.budget)} USD`
+                  : null
+              }
             />
-            <Field label="Fecha de creación" value={formatDate(String(lead.created_at))} />
+            <Field
+              label="Fecha de creación"
+              value={formatDate(String(lead.created_at))}
+            />
           </tbody>
         </table>
       </div>
-
     </div>
   )
 }
