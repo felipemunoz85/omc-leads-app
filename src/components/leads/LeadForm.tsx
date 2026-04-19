@@ -87,7 +87,7 @@ export default function LeadForm({ onClose, lead, onSubmit }: LeadFormProps) {
         <Select
           defaultValue={lead?.source}
           onValueChange={(value) =>
-            setValue('source', value, { shouldValidate: true })
+            setValue('source', value as 'instagram' | 'facebook' | 'landing_page' | 'referred' | 'other', { shouldValidate: true })
           }
         >
           <SelectTrigger>

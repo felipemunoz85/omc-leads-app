@@ -103,7 +103,7 @@ export default function Leads() {
              <h1 className="text-4xl font-bold pointer-events-auto">Leads Dashboard</h1>
           </div>
           <div className="flex gap-4">
-            <AiSummaryDrawer />
+            <AiSummaryDrawer leads={filteredLeads}/>
             <Button
                         data-icon="inline-start"
                         onClick={onOpenModal}
