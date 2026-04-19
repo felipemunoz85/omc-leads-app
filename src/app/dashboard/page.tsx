@@ -1,10 +1,11 @@
 'use client'
-import { useCallback, useState } from 'react'
+import { startTransition, useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { UserRoundPlus } from 'lucide-react'
 
 import { Lead } from '@/types/leads'
 import { LeadFormData } from '@/lib/validations'
+import { filterLeads } from '@/lib/utils/leads'
 import { useLeadsStore } from '@/store/leadsStore'
 
 import LeadsPagination from '@/components/leads/LeadsPagination'
@@ -20,29 +21,6 @@ export default function Leads() {
   const leads = useLeadsStore((state) => state.leads)
   const filters = useLeadsStore((state) => state.filters)
 
-  const filteredLeads = leads
-    .filter((lead) => {
-      const search = filters.search.toLowerCase()
-      const matchSearch =
-        !search ||
-        lead.name.toLowerCase().includes(search) ||
-        lead.email.toLowerCase().includes(search)
-
-      const matchSource = !filters.source || lead.source === filters.source
-
-      const matchDateFrom =
-        !filters.dateFrom ||
-        new Date(lead.created_at) >= new Date(filters.dateFrom)
-
-      const matchDateTo =
-        !filters.dateTo || new Date(lead.created_at) <= new Date(filters.dateTo)
-
-      return matchSearch && matchSource && matchDateFrom && matchDateTo
-    })
-    .sort(
-      (a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    )
   const addLead = useLeadsStore((state) => state.addLead)
   const updateLead = useLeadsStore((state) => state.updateLead)
   const deleteLead = useLeadsStore((state) => state.deleteLead)
@@ -51,6 +29,7 @@ export default function Leads() {
   const leadsPerPage = useLeadsStore((state) => state.leadsPerPage)
   const setPage = useLeadsStore((state) => state.setPage)
 
+  const filteredLeads = filterLeads(leads, filters)
   const totalPages = Math.ceil(filteredLeads.length / leadsPerPage)
   const paginatedLeads = filteredLeads.slice(
     (currentPage - 1) * leadsPerPage,
@@ -61,7 +40,21 @@ export default function Leads() {
   const [leadToEdit, setLeadToEdit] = useState<Lead | null>(null)
 
   const [isLoading, setIsLoading] = useState(false)
+
+  // TODO: set error message to simulate
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+  const timeout = setTimeout(() => setIsLoading(false), 1500)
+  return () => clearTimeout(timeout)
+}, [])
+
+  useEffect(() => {
+    startTransition(() => setIsLoading(true))
+
+    const timeout = setTimeout(() => setIsLoading(false), 800)
+    return () => clearTimeout(timeout)
+  }, [filters])
 
   const onOpenModal = () => {
     setIsModalOpen(true)

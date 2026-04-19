@@ -16,3 +16,10 @@ export enum Sources {
   referred = 'Referido',
   other = 'Otro',
 }
+
+export type Filters = {
+  search: string
+  source: string
+  dateFrom: string
+  dateTo: string
+}

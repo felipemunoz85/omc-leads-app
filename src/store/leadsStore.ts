@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { Lead } from '@/types/leads'
+import { persist } from 'zustand/middleware'
+import { Lead, Filters } from '@/types/leads'
 import { initialLeads } from '@/lib/leadsData'
 
 function getNextId(leads: Lead[]): number {
@@ -9,12 +10,6 @@ function getNextId(leads: Lead[]): number {
   return maxId + 1
 }
 
-type Filters = {
-  search: string
-  source: string
-  dateFrom: string
-  dateTo: string
-}
 type LeadsState = {
   leads: Lead[]
   filters: Filters
@@ -36,43 +31,51 @@ const defaultFilters: Filters = {
   dateTo: '',
 }
 
-export const useLeadsStore = create<LeadsState>((set, get) => ({
-  leads: initialLeads,
-  filters: defaultFilters,
-  currentPage: 1,
-  leadsPerPage: 5,
-
-  addLead: (data) => {
-    const newLead: Lead = {
-      ...data,
-      id: getNextId(get().leads),
-      created_at: new Date().toISOString(),
-    }
-    set((state) => ({ leads: [newLead, ...state.leads] }))
-  },
-
-  updateLead: (id, data) => {
-    set((state) => ({
-      leads: state.leads.map((lead) =>
-        lead.id === id ? { ...lead, ...data } : lead
-      ),
-    }))
-  },
-
-  deleteLead: (id) => {
-    set((state) => ({
-      leads: state.leads.filter((lead) => lead.id !== id),
-    }))
-  },
-
-  setFilter: (key, value) => {
-    set((state) => ({
-      filters: { ...state.filters, [key]: value },
+export const useLeadsStore = create<LeadsState>()(
+  persist(
+    (set, get) => ({
+      leads: initialLeads,
+      filters: defaultFilters,
       currentPage: 1,
-    }))
-  },
+      leadsPerPage: 5,
 
-  resetFilters: () => set({ filters: defaultFilters, currentPage: 1 }),
+      addLead: (data) => {
+        const newLead: Lead = {
+          ...data,
+          id: getNextId(get().leads),
+          created_at: new Date().toISOString(),
+        }
+        set((state) => ({ leads: [newLead, ...state.leads] }))
+      },
 
-  setPage: (page) => set({ currentPage: page }),
-}))
+      updateLead: (id, data) => {
+        set((state) => ({
+          leads: state.leads.map((lead) =>
+            lead.id === id ? { ...lead, ...data } : lead
+          ),
+        }))
+      },
+
+      deleteLead: (id) => {
+        set((state) => ({
+          leads: state.leads.filter((lead) => lead.id !== id),
+        }))
+      },
+
+      setFilter: (key, value) => {
+        set((state) => ({
+          filters: { ...state.filters, [key]: value },
+          currentPage: 1,
+        }))
+      },
+
+      resetFilters: () => set({ filters: defaultFilters, currentPage: 1 }),
+
+      setPage: (page) => set({ currentPage: page }),
+    }),
+    {
+      name: 'leads-storage',
+      partialize: (state) => ({ leads: state.leads }),
+    }
+  )
+)
