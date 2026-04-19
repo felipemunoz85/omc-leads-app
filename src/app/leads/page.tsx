@@ -13,6 +13,7 @@ import { Lead } from '@/types/leads'
 import { useLeadsStore } from '@/store/leadsStore'
 import LeadsPagination from '@/components/leads/LeadsPagination'
 import MetricsSection from '@/components/metrics/MetricsSection'
+import { AiSummaryDrawer } from '@/components/ai_summary/AiSummaryDrawer'
 
 export default function Leads() {
   const leads = useLeadsStore((state) => state.leads)
@@ -101,13 +102,17 @@ export default function Leads() {
             <span className="text-base text-gray-700">One Million Company</span>
              <h1 className="text-4xl font-bold pointer-events-auto">Leads Dashboard</h1>
           </div>
-          <Button
-            data-icon="inline-start"
-            onClick={onOpenModal}
-          >
-            <UserRoundPlus />
-            Nuevo Lead
-          </Button>
+          <div className="flex gap-4">
+            <AiSummaryDrawer />
+            <Button
+                        data-icon="inline-start"
+                        onClick={onOpenModal}
+                      >
+                        <UserRoundPlus />
+                        Nuevo Lead
+                      </Button>
+          </div>
+
         </div>
         <div className="py-4">
           <MetricsSection leads={filteredLeads} />
