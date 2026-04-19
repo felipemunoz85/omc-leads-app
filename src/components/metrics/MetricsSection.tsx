@@ -1,8 +1,9 @@
-import MetricsCard from '@/components/metrics/MetricsCard'
 import { Lead } from '@/types/leads'
 import { formatCurrency } from '@/lib/utils/format'
 import { isWithinLastDays } from '@/lib/utils/date'
 import { SOURCES } from '@/lib/utils/constants'
+
+import MetricsCard from '@/components/metrics/MetricsCard'
 type Props = {
   leads: Lead[]
 }
@@ -29,7 +30,7 @@ export default function MetricsSection({ leads }: Props) {
     Object.entries(sourceCount).sort((a, b) => b[1] - a[1])[0]?.[0] ?? '—'
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 max-w-[1024px]">
       <MetricsCard label="Total leads" value={total} />
       <MetricsCard
         label="Presupuesto promedio"

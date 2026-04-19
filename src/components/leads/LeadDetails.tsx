@@ -1,6 +1,8 @@
 import React from "react";
+
 import { Lead } from "@/types/leads";
 import { FIELDS_MAP } from "@/lib/utils/constants";
+
 type Props = {
   lead: Lead | null
 }

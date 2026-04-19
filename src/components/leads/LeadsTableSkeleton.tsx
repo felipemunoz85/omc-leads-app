@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import { Table, TableBody } from '../ui/table'
-import LeadsTableHeader from './LeadsTableHeader'
+import { Table, TableBody } from '@/components/ui/table'
+import LeadsTableHeader from '@/components/leads/LeadsTableHeader'
 export default function LeadsTableSkeleton() {
   return (
     <div className="w-full border border-gray-200 rounded-xl overflow-hidden">

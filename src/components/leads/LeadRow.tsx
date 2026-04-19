@@ -1,9 +1,10 @@
-import { JSX } from "react";
+import { SquarePen } from "lucide-react";
+
 import { Lead, Sources } from "@/types/leads";
 import { formatDate, formatCurrency } from "@/lib/utils/format";
+
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { SquarePen } from "lucide-react";
 import { DeleteLeadAction } from "@/components/leads/DeleteLeadAction";
 import {
   Tooltip,
@@ -17,7 +18,7 @@ type Props = {
   onEdit: (lead: Lead) => void
   onDelete: (lead: Lead) => void
 };
-export default function LeadRow(props: Props): JSX.Element {
+export default function LeadRow(props: Props) {
   const { lead, onShowLead, onEdit, onDelete } = props;
 
   const handleDeleteAction = () => {

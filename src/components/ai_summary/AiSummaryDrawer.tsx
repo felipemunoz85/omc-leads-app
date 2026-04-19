@@ -1,9 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Bot } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
+import { Bot } from 'lucide-react'
+
+import { Lead } from '@/types/leads'
+import { Button } from '@/components/ui/button'
 import {
   Drawer,
   DrawerClose,
@@ -13,7 +15,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import { Lead } from '@/types/leads'
 import { Skeleton } from '@/components/ui/skeleton'
 
 type Props = {
@@ -107,6 +108,8 @@ export function AiSummaryDrawer({ leads }: Props) {
           {summary && !isLoading && (
             <div className="flex flex-col gap-4 py-2">
               <ReactMarkdown
+                allowedElements={['h1', 'h2', 'h3', 'p', 'ul', 'ol', 'li', 'strong', 'em', 'code', 'blockquote']}
+                unwrapDisallowed
                 components={{
                   h1: ({ children }) => (
                     <h2 className="text-lg font-semibold mt-4 mb-1">

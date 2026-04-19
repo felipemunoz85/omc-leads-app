@@ -1,10 +1,9 @@
-import React, { JSX } from "react";
 import {
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-export default function LeadsTableHeader(): JSX.Element {
+export default function LeadsTableHeader(){
   return (
     <>
       <TableHeader>

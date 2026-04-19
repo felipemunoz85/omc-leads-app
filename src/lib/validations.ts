@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const leadSchema = z.object({
   name: z.string().min(2, 'Mínimo 2 caracteres'),
-  email: z.email('Email inválido').min(1, 'El email es obligatorio'),
+  email: z.string().email('Email inválido').min(1, 'El email es obligatorio'),
   phone: z.string().optional(),
   source: z.enum(
     ['instagram', 'facebook', 'landing_page', 'referred', 'other'],

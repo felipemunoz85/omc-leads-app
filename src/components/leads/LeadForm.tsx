@@ -1,9 +1,13 @@
 'use client'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+
+import { Lead } from '@/types/leads'
+import { leadSchema, LeadFormData } from '@/lib/validations'
+import { SOURCES_FIELDS } from '@/lib/utils/constants'
+
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { SOURCES_FIELDS } from '@/lib/utils/constants'
 import {
   Select,
   SelectContent,
@@ -11,9 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Lead } from '@/types/leads'
-
-import { leadSchema, LeadFormData } from '@/lib/validations'
 
 type LeadFormProps = {
   lead: Lead | null
@@ -34,20 +35,21 @@ export default function LeadForm({ onClose, lead, onSubmit }: LeadFormProps) {
     defaultValues: {
       name: lead?.name ?? '',
       email: lead?.email ?? '',
-      phone: lead?.phone ?? undefined,
+      phone: lead?.phone,
       source: lead?.source ?? 'other',
       interest_product: lead?.interest_product ?? '',
-      budget: lead?.budget ?? undefined,
+      budget: lead?.budget,
     },
   })
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-gray-700">
+        <label htmlFor="name" className="text-sm font-medium text-gray-700">
           Nombre <span className="text-red-500">*</span>
         </label>
         <Input
+          id="name"
           type="text"
           placeholder="Ej: Valentina Torres"
           {...register('name')}
@@ -57,10 +59,11 @@ export default function LeadForm({ onClose, lead, onSubmit }: LeadFormProps) {
         )}
       </div>
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-gray-700">
+        <label htmlFor="email" className="text-sm font-medium text-gray-700">
           Email <span className="text-red-500">*</span>
         </label>
         <Input
+          id="email"
           type="email"
           placeholder="Ej: valentina@gmail.com"
           {...register('email')}
@@ -70,24 +73,25 @@ export default function LeadForm({ onClose, lead, onSubmit }: LeadFormProps) {
         )}
       </div>
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-gray-700">
+        <label htmlFor="phone" className="text-sm font-medium text-gray-700">
           Teléfono
           <span className="text-gray-400 font-normal ml-1">(opcional)</span>
         </label>
         <Input
+          id="phone"
           type="tel"
           placeholder="+57 311 234 5678"
           {...register('phone')}
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-gray-700">
+        <label htmlFor="source" className="text-sm font-medium text-gray-700">
           Fuente <span className="text-red-500">*</span>
         </label>
         <Select
           defaultValue={lead?.source}
           onValueChange={(value) =>
-            setValue('source', value as 'instagram' | 'facebook' | 'landing_page' | 'referred' | 'other', { shouldValidate: true })
+            setValue('source', value as Lead['source'], { shouldValidate: true })
           }
         >
           <SelectTrigger>
@@ -106,18 +110,19 @@ export default function LeadForm({ onClose, lead, onSubmit }: LeadFormProps) {
         )}
       </div>
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-gray-700">
+        <label htmlFor="interest_product" className="text-sm font-medium text-gray-700">
           Producto de interés
           <span className="text-gray-400 font-normal ml-1">(opcional)</span>
         </label>
         <Input
+          id="interest_product"
           type="text"
           placeholder="Ej: Curso de marketing digital"
           {...register('interest_product')}
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-gray-700">
+        <label htmlFor="budget" className="text-sm font-medium text-gray-700">
           Presupuesto
           <span className="text-gray-400 font-normal ml-1">(opcional)</span>
         </label>
@@ -126,6 +131,7 @@ export default function LeadForm({ onClose, lead, onSubmit }: LeadFormProps) {
             $
           </span>
           <Input
+            id="budget"
             type="number"
             min={0}
             placeholder="0"
