@@ -26,7 +26,6 @@ export default function LeadsTable({ leads, onLeadEdit, onDelete }: Props): JSX.
   return (
     <>
       <Table>
-        <TableCaption>Listado de leads</TableCaption>
         <LeadsTableHeader />
         <TableBody>
           {leads.map((lead: Lead) => (

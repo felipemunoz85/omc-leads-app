@@ -1,30 +1,28 @@
-"use client";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { SOURCES_FIELDS } from "@/lib/utils/constants";
+'use client'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { SOURCES_FIELDS } from '@/lib/utils/constants'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Lead } from "@/types/leads";
+} from '@/components/ui/select'
+import { Lead } from '@/types/leads'
 
-import { leadSchema, LeadFormData } from "@/lib/validations";
-
+import { leadSchema, LeadFormData } from '@/lib/validations'
 
 type LeadFormProps = {
-  lead: Lead | null;
-  onClose: () => void;
+  lead: Lead | null
+  onClose: () => void
   onSubmit: (data: LeadFormData) => void
-};
+}
 
 export default function LeadForm({ onClose, lead, onSubmit }: LeadFormProps) {
-  const isEditing = !!lead;
+  const isEditing = !!lead
 
   const {
     register,
@@ -41,7 +39,7 @@ export default function LeadForm({ onClose, lead, onSubmit }: LeadFormProps) {
       interest_product: lead?.interest_product ?? '',
       budget: lead?.budget ?? undefined,
     },
-  });
+  })
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
@@ -86,7 +84,12 @@ export default function LeadForm({ onClose, lead, onSubmit }: LeadFormProps) {
         <label className="text-sm font-medium text-gray-700">
           Fuente <span className="text-red-500">*</span>
         </label>
-        <Select defaultValue={lead?.source} onValueChange={(value) => setValue('source', value, { shouldValidate: true })}>
+        <Select
+          defaultValue={lead?.source}
+          onValueChange={(value) =>
+            setValue('source', value, { shouldValidate: true })
+          }
+        >
           <SelectTrigger>
             <SelectValue placeholder="Selecciona una fuente" />
           </SelectTrigger>
@@ -139,9 +142,9 @@ export default function LeadForm({ onClose, lead, onSubmit }: LeadFormProps) {
           Cancelar
         </Button>
         <Button type="submit">
-          {isEditing ? "Guardar cambios" : "Guardar lead"}
+          {isEditing ? 'Guardar cambios' : 'Guardar lead'}
         </Button>
       </div>
     </form>
-  );
+  )
 }

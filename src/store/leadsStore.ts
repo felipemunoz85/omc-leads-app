@@ -18,12 +18,15 @@ type Filters = {
 type LeadsState = {
   leads: Lead[]
   filters: Filters
+  currentPage: number
+  leadsPerPage: number
 
   addLead: (lead: Omit<Lead, 'id' | 'created_at'>) => void
   updateLead: (id: number, data: Partial<Lead>) => void
   deleteLead: (id: number) => void
   setFilter: (key: keyof Filters, value: string) => void
   resetFilters: () => void
+  setPage: (page: number) => void
 }
 
 const defaultFilters: Filters = {
@@ -36,6 +39,8 @@ const defaultFilters: Filters = {
 export const useLeadsStore = create<LeadsState>((set, get) => ({
   leads: initialLeads,
   filters: defaultFilters,
+  currentPage: 1,
+  leadsPerPage: 5,
 
   addLead: (data) => {
     const newLead: Lead = {
@@ -63,8 +68,11 @@ export const useLeadsStore = create<LeadsState>((set, get) => ({
   setFilter: (key, value) => {
     set((state) => ({
       filters: { ...state.filters, [key]: value },
+      currentPage: 1,
     }))
   },
 
-  resetFilters: () => set({ filters: defaultFilters }),
+  resetFilters: () => set({ filters: defaultFilters, currentPage: 1 }),
+
+  setPage: (page) => set({ currentPage: page }),
 }))
