@@ -12,6 +12,7 @@ import { UserRoundPlus } from 'lucide-react'
 import { Lead } from '@/types/leads'
 import { useLeadsStore } from '@/store/leadsStore'
 import LeadsPagination from '@/components/leads/LeadsPagination'
+import MetricsSection from '@/components/metrics/MetricsSection'
 
 export default function Leads() {
   const leads = useLeadsStore((state) => state.leads)
@@ -94,20 +95,25 @@ export default function Leads() {
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <div className="flex gap-4 items-center pb-8">
-          <h1 className="text-xl font-bold pointer-events-auto">Leads</h1>
-        </div>
-        <div className="flex gap-4 items-center pb-8">
-          <LeadFilters />
+      <main className="flex flex-1 w-full flex-col items-center py-32 px-16 bg-white dark:bg-black sm:items-start">
+        <div className="flex w-full gap-4 items-end justify-between pb-8">
+          <div className="flex flex-col gap-4">
+            <span className="text-base text-gray-700">One Million Company</span>
+             <h1 className="text-4xl font-bold pointer-events-auto">Leads Dashboard</h1>
+          </div>
           <Button
-            variant="outline"
             data-icon="inline-start"
             onClick={onOpenModal}
           >
             <UserRoundPlus />
             Nuevo Lead
           </Button>
+        </div>
+        <div className="py-4">
+          <MetricsSection leads={filteredLeads} />
+        </div>
+        <div className="flex gap-4 items-center pb-8">
+          <LeadFilters />
         </div>
         <LeadsTable
           leads={paginatedLeads}
