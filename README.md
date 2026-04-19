@@ -2,8 +2,6 @@
 
 Aplicación frontend para gestión de leads de **One Million Copy SAS**. Permite visualizar, filtrar, crear, editar y eliminar leads, con métricas derivadas y un resumen generado con IA.
 
-[Ir a URL en Vercel](https://omc-leads-51g2hwddg-capodiseno-8464s-projects.vercel.app/)
-
 ---
 
 ## Stack
