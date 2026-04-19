@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-
+import { toast } from 'sonner'
 import LeadsTable from '@/components/leads/LeadsTable'
 import Modal from '@/components/ui/Modal'
 import LeadForm from '@/components/leads/LeadForm'
@@ -13,7 +13,7 @@ import { Lead } from '@/types/leads'
 import { useLeadsStore } from '@/store/leadsStore'
 import LeadsPagination from '@/components/leads/LeadsPagination'
 
-export default function Home() {
+export default function Leads() {
   const leads = useLeadsStore((state) => state.leads)
   const filters = useLeadsStore((state) => state.filters)
 
@@ -56,6 +56,10 @@ export default function Home() {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [leadToEdit, setLeadToEdit] = useState<Lead | null>(null)
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
   const onOpenModal = () => {
     setIsModalOpen(true)
   }
@@ -69,6 +73,7 @@ export default function Home() {
     if (!lead.id) return
 
     deleteLead(lead.id as number)
+    toast.success('Lead eliminado')
   }
 
   const onCloseModal = () => {
@@ -79,8 +84,10 @@ export default function Home() {
   const onSubmit = (data: LeadFormData) => {
     if (leadToEdit) {
       updateLead(leadToEdit.id as number, data)
+      toast.success('Lead actualizado')
     } else {
       addLead(data)
+      toast.success('Lead creado')
     }
     onCloseModal()
   }
@@ -106,6 +113,8 @@ export default function Home() {
           leads={paginatedLeads}
           onLeadEdit={(value) => onEdit(value)}
           onDelete={onDelete}
+          isLoading={isLoading}
+          error={error}
         />
         <LeadsPagination
           currentPage={currentPage}

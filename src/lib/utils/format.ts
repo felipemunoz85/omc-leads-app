@@ -15,7 +15,3 @@ export function formatCurrency(amount: number): string {
     maximumFractionDigits: 0,
   }).format(amount)
 }
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
